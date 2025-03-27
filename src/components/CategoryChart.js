@@ -9,11 +9,15 @@ import {
   Legend,
 } from 'recharts';
 
-// Updated colors for the futuristic theme
-const COLORS = ['#00F5FF', '#7B42F6', '#FF7C48', '#25D07D', '#FF5E7D'];
-
 const CategoryChart = ({ data }) => {
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
+  
+  // Colors based on theme
+  const COLORS = isDarkMode 
+    ? ['#00F5FF', '#7B42F6', '#FF7C48', '#25D07D', '#FF5E7D']
+    : [theme.palette.primary.main, theme.palette.secondary.main, 
+       theme.palette.warning.main, theme.palette.success.main, '#e91e63'];
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -22,14 +26,16 @@ const CategoryChart = ({ data }) => {
       return (
         <Box
           sx={{
-            backgroundColor: 'rgba(23, 28, 44, 0.95)',
+            backgroundColor: isDarkMode 
+              ? 'rgba(23, 28, 44, 0.95)' 
+              : 'rgba(255, 255, 255, 0.95)',
             p: 2,
             border: `1px solid ${color}30`,
             borderRadius: 1,
-            boxShadow: `0 4px 20px rgba(0, 0, 0, 0.3), 0 0 10px ${color}40`,
+            boxShadow: `0 4px 20px rgba(0, 0, 0, ${isDarkMode ? 0.3 : 0.1}), 0 0 10px ${color}40`,
           }}
         >
-          <Typography variant="subtitle2" sx={{ color: "#E4F0FB" }}>{name}</Typography>
+          <Typography variant="subtitle2" sx={{ color: theme.palette.text.primary }}>{name}</Typography>
           <Typography variant="body1" sx={{ color: color, fontWeight: 600 }}>
             {`${value}% of total sales`}
           </Typography>
@@ -59,9 +65,14 @@ const CategoryChart = ({ data }) => {
               backgroundColor: entry.color, 
               borderRadius: '50%', 
               marginRight: '5px',
-              boxShadow: `0 0 5px ${entry.color}80` 
+              boxShadow: isDarkMode ? `0 0 5px ${entry.color}80` : 'none' 
             }} />
-            <span style={{ fontSize: '12px', color: '#A1B4C7' }}>{entry.value}</span>
+            <span style={{ 
+              fontSize: '12px', 
+              color: theme.palette.text.secondary 
+            }}>
+              {entry.value}
+            </span>
           </li>
         ))}
       </ul>
@@ -78,7 +89,7 @@ const CategoryChart = ({ data }) => {
     }}>
       <CardContent sx={{ p: 3, pb: 2, flexGrow: 1 }}>
         <Typography variant="h6" gutterBottom sx={{ 
-          color: '#00F5FF',
+          color: theme.palette.primary.main,
           fontWeight: 600,
           mb: 2
         }}>
@@ -102,7 +113,9 @@ const CategoryChart = ({ data }) => {
                     key={`cell-${index}`} 
                     fill={COLORS[index % COLORS.length]}
                     style={{
-                      filter: `drop-shadow(0 0 5px ${COLORS[index % COLORS.length]}40)`,
+                      filter: isDarkMode 
+                        ? `drop-shadow(0 0 5px ${COLORS[index % COLORS.length]}40)` 
+                        : 'none',
                     }}
                   />
                 ))}

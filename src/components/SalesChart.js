@@ -16,17 +16,39 @@ const timeRanges = [
   { value: 'month', label: '30D' },
 ];
 
-// Updated colors for the futuristic theme
-const metricConfig = {
-  sales: { label: 'Sales', color: '#00F5FF', prefix: '$', dataKey: 'sales' },
-  orders: { label: 'Orders', color: '#7B42F6', prefix: '', dataKey: 'orders' },
-  customers: { label: 'Customers', color: '#FF7C48', prefix: '', dataKey: 'customers' },
-  average: { label: 'Avg. Order', color: '#25D07D', prefix: '$', dataKey: 'average' },
-};
-
 const SalesChart = ({ data, metric, onTimeRangeChange, timeRange }) => {
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  // Get the metric color from the theme's primary color if not specified
+  const metricConfig = {
+    sales: { 
+      label: 'Sales', 
+      color: theme.palette.primary.main, 
+      prefix: '$', 
+      dataKey: 'sales' 
+    },
+    orders: { 
+      label: 'Orders', 
+      color: theme.palette.secondary.main, 
+      prefix: '', 
+      dataKey: 'orders' 
+    },
+    customers: { 
+      label: 'Customers', 
+      color: isDarkMode ? '#FF7C48' : theme.palette.warning.main, 
+      prefix: '', 
+      dataKey: 'customers' 
+    },
+    average: { 
+      label: 'Avg. Order', 
+      color: isDarkMode ? '#25D07D' : theme.palette.success.main, 
+      prefix: '$', 
+      dataKey: 'average' 
+    },
+  };
+
   const currentMetric = metricConfig[metric];
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -34,14 +56,16 @@ const SalesChart = ({ data, metric, onTimeRangeChange, timeRange }) => {
       return (
         <Box
           sx={{
-            backgroundColor: 'rgba(23, 28, 44, 0.95)',
+            backgroundColor: isDarkMode 
+              ? 'rgba(23, 28, 44, 0.95)' 
+              : 'rgba(255, 255, 255, 0.95)',
             p: 2,
             border: `1px solid ${currentMetric.color}30`,
             borderRadius: 1,
-            boxShadow: `0 4px 20px rgba(0, 0, 0, 0.3), 0 0 10px ${currentMetric.color}40`,
+            boxShadow: `0 4px 20px rgba(0, 0, 0, ${isDarkMode ? 0.3 : 0.1}), 0 0 10px ${currentMetric.color}40`,
           }}
         >
-          <Typography variant="subtitle2" sx={{ color: "#E4F0FB" }}>{label}</Typography>
+          <Typography variant="subtitle2" sx={{ color: theme.palette.text.primary }}>{label}</Typography>
           <Typography variant="body1" sx={{ color: currentMetric.color, fontWeight: 600 }}>
             {`${currentMetric.label}: ${currentMetric.prefix}${payload[0].value.toLocaleString()}`}
           </Typography>
@@ -86,9 +110,13 @@ const SalesChart = ({ data, metric, onTimeRangeChange, timeRange }) => {
                 sx={{
                   backgroundColor: timeRange === range.value ? currentMetric.color : 'transparent',
                   borderColor: currentMetric.color,
-                  color: timeRange === range.value ? 'black' : currentMetric.color,
+                  color: timeRange === range.value 
+                    ? (isDarkMode ? 'black' : 'white')
+                    : currentMetric.color,
                   '&:hover': {
-                    backgroundColor: timeRange === range.value ? currentMetric.color : `${currentMetric.color}20`,
+                    backgroundColor: timeRange === range.value 
+                      ? currentMetric.color 
+                      : `${currentMetric.color}20`,
                   },
                 }}
               >
@@ -108,15 +136,33 @@ const SalesChart = ({ data, metric, onTimeRangeChange, timeRange }) => {
                 bottom: 20,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
+              <CartesianGrid 
+                strokeDasharray="3 3" 
+                stroke={isDarkMode 
+                  ? "rgba(255, 255, 255, 0.1)" 
+                  : "rgba(0, 0, 0, 0.1)"
+                } 
+              />
               <XAxis 
                 dataKey="date" 
-                stroke="rgba(255, 255, 255, 0.5)"
-                tick={{ fill: '#A1B4C7', fontSize: 12 }}
+                stroke={isDarkMode 
+                  ? "rgba(255, 255, 255, 0.5)"
+                  : "rgba(0, 0, 0, 0.5)"
+                }
+                tick={{ 
+                  fill: theme.palette.text.secondary, 
+                  fontSize: 12 
+                }}
               />
               <YAxis 
-                stroke="rgba(255, 255, 255, 0.5)"
-                tick={{ fill: '#A1B4C7', fontSize: 12 }}
+                stroke={isDarkMode 
+                  ? "rgba(255, 255, 255, 0.5)"
+                  : "rgba(0, 0, 0, 0.5)"
+                }
+                tick={{ 
+                  fill: theme.palette.text.secondary, 
+                  fontSize: 12 
+                }}
                 width={50}
                 tickFormatter={(value) => {
                   if (metric === 'average') {

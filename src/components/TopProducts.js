@@ -1,12 +1,17 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import { Card, CardContent, Typography, Box, Divider, useTheme } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 const TopProducts = ({ products }) => {
+  const theme = useTheme();
+  
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent sx={{ p: 2, pb: 0, flexGrow: 0 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ 
+          mb: 2,
+          color: theme.palette.primary.main
+        }}>
           Top Products
         </Typography>
         <Box 
@@ -28,7 +33,11 @@ const TopProducts = ({ products }) => {
           </Typography>
         </Box>
       </CardContent>
-      <Divider />
+      <Divider sx={{ 
+        borderColor: theme.palette.mode === 'dark' 
+          ? 'rgba(255, 255, 255, 0.1)' 
+          : 'rgba(0, 0, 0, 0.1)' 
+      }} />
       <Box sx={{ overflow: 'auto', flexGrow: 1 }}>
         {products.map((product, index) => (
           <React.Fragment key={index}>
@@ -56,7 +65,7 @@ const TopProducts = ({ products }) => {
               >
                 <TrendingUpIcon 
                   sx={{ 
-                    color: 'success.main', 
+                    color: theme.palette.success.main, 
                     fontSize: 16,
                     mr: 0.5
                   }} 
@@ -64,7 +73,7 @@ const TopProducts = ({ products }) => {
                 <Typography 
                   variant="body2" 
                   sx={{ 
-                    color: 'success.main',
+                    color: theme.palette.success.main,
                     fontWeight: 500
                   }}
                 >
@@ -72,7 +81,11 @@ const TopProducts = ({ products }) => {
                 </Typography>
               </Box>
             </Box>
-            {index < products.length - 1 && <Divider />}
+            {index < products.length - 1 && <Divider sx={{ 
+              borderColor: theme.palette.mode === 'dark' 
+                ? 'rgba(255, 255, 255, 0.1)' 
+                : 'rgba(0, 0, 0, 0.1)' 
+            }} />}
           </React.Fragment>
         ))}
       </Box>

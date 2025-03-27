@@ -1,12 +1,18 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import { Card, CardContent, Typography, Box, Divider, useTheme } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 const StatsList = ({ title, items, primaryKey, secondaryKey, metaKey, growthKey }) => {
+  const theme = useTheme();
+  
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent sx={{ p: 2, pb: 0, flexGrow: 0 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ 
+          mb: 2,
+          color: theme.palette.primary.main
+        }}>
           {title}
         </Typography>
       </CardContent>
@@ -38,20 +44,28 @@ const StatsList = ({ title, items, primaryKey, secondaryKey, metaKey, growthKey 
                   <Typography 
                     variant="body2" 
                     sx={{ 
-                      color: item[growthKey].startsWith('+') ? 'success.main' : 'error.main',
+                      color: item[growthKey].startsWith('+') 
+                        ? theme.palette.success.main 
+                        : theme.palette.error.main,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'flex-end',
                       gap: 0.5
                     }}
                   >
-                    <TrendingUpIcon sx={{ fontSize: 16 }} />
+                    {item[growthKey].startsWith('+') 
+                      ? <TrendingUpIcon sx={{ fontSize: 16 }} /> 
+                      : <TrendingDownIcon sx={{ fontSize: 16 }} />}
                     {item[growthKey]}
                   </Typography>
                 )}
               </Box>
             </Box>
-            {index < items.length - 1 && <Divider />}
+            {index < items.length - 1 && <Divider sx={{ 
+              borderColor: theme.palette.mode === 'dark' 
+                ? 'rgba(255, 255, 255, 0.1)' 
+                : 'rgba(0, 0, 0, 0.1)' 
+            }} />}
           </React.Fragment>
         ))}
       </Box>
