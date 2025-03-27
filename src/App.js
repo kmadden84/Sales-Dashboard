@@ -9,7 +9,8 @@ import {
   MenuItem, 
   FormControl, 
   InputLabel,
-  useMediaQuery
+  useMediaQuery,
+  CssBaseline
 } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -24,38 +25,93 @@ import StatsList from './components/StatsList';
 
 import { salesData, categoryData, productData, summaryStats } from './data/mockData';
 
+// Futuristic theme
 const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
       fontSize: '2rem',
-      background: 'linear-gradient(45deg, #2196f3, #1976d2)',
+      background: 'linear-gradient(90deg, #00F5FF, #00C8FF, #0080FF)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
+      textShadow: '0 0 15px rgba(0, 247, 255, 0.5)',
+      letterSpacing: '0.05em',
     },
     h6: {
       fontWeight: 600,
       fontSize: '1.1rem',
+      letterSpacing: '0.03em',
     }
   },
   palette: {
+    mode: 'dark',
     primary: {
-      main: '#2196f3',
-      light: '#64b5f6',
-      dark: '#1976d2',
+      main: '#00F5FF',
+      light: '#64F9FF',
+      dark: '#00C8FF',
+    },
+    secondary: {
+      main: '#7B42F6',
     },
     background: {
-      default: '#f8fafc',
-      paper: '#ffffff',
+      default: '#10141E',
+      paper: '#171C2C',
+    },
+    text: {
+      primary: '#E4F0FB',
+      secondary: '#A1B4C7',
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background: 'linear-gradient(135deg, #10141E 0%, #171C2C 100%)',
+          backgroundAttachment: 'fixed',
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: '16px',
-          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          backgroundColor: 'rgba(23, 28, 44, 0.8)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 0 1px rgba(0, 245, 255, 0.1)',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 15px rgba(0, 245, 255, 0.2)',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          textTransform: 'none',
+          fontWeight: 500,
+        },
+        containedPrimary: {
+          background: 'linear-gradient(90deg, #00F5FF, #0080FF)',
+          boxShadow: '0 0 15px rgba(0, 245, 255, 0.5)',
+          '&:hover': {
+            background: 'linear-gradient(90deg, #00F5FF, #0080FF)',
+            boxShadow: '0 0 20px rgba(0, 245, 255, 0.7)',
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        },
+        head: {
+          fontWeight: 600,
+          color: '#E4F0FB',
         },
       },
     },
@@ -96,26 +152,39 @@ function App() {
   };
 
   const metricOptions = [
-    { value: 'sales', label: 'Total Sales', icon: <AttachMoneyIcon sx={{ fontSize: 20, color: '#2196f3' }} />, color: '#2196f3', displayValue: `$${summaryStats.totalSales.toLocaleString()}` },
-    { value: 'orders', label: 'Total Orders', icon: <ShoppingCartIcon sx={{ fontSize: 20, color: '#4caf50' }} />, color: '#4caf50', displayValue: summaryStats.totalOrders.toLocaleString() },
-    { value: 'customers', label: 'Total Customers', icon: <PeopleIcon sx={{ fontSize: 20, color: '#ff9800' }} />, color: '#ff9800', displayValue: summaryStats.totalCustomers.toLocaleString() },
-    { value: 'average', label: 'Average Order Value', icon: <TrendingUpIcon sx={{ fontSize: 20, color: '#9c27b0' }} />, color: '#9c27b0', displayValue: `$${summaryStats.averageOrderValue.toLocaleString()}` },
+    { value: 'sales', label: 'Total Sales', icon: <AttachMoneyIcon sx={{ fontSize: 20, color: '#00F5FF' }} />, color: '#00F5FF', displayValue: `$${summaryStats.totalSales.toLocaleString()}` },
+    { value: 'orders', label: 'Total Orders', icon: <ShoppingCartIcon sx={{ fontSize: 20, color: '#7B42F6' }} />, color: '#7B42F6', displayValue: summaryStats.totalOrders.toLocaleString() },
+    { value: 'customers', label: 'Total Customers', icon: <PeopleIcon sx={{ fontSize: 20, color: '#FF7C48' }} />, color: '#FF7C48', displayValue: summaryStats.totalCustomers.toLocaleString() },
+    { value: 'average', label: 'Average Order Value', icon: <TrendingUpIcon sx={{ fontSize: 20, color: '#25D07D' }} />, color: '#25D07D', displayValue: `$${summaryStats.averageOrderValue.toLocaleString()}` },
   ];
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Box 
         sx={{ 
           minHeight: '100vh',
-          backgroundColor: 'background.default',
           px: { xs: 2, sm: 3, md: 4 },
-          py: { xs: 2, sm: 3 }
+          py: { xs: 2, sm: 3 },
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '5px',
+            background: 'linear-gradient(90deg, #00F5FF, #7B42F6, #FF7C48)',
+            zIndex: 1,
+          },
         }}
       >
         <Box 
           sx={{ 
             maxWidth: '1600px', 
             mx: 'auto', 
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           <Typography variant="h4" gutterBottom sx={{ mb: { xs: 2, sm: 3 } }}>
@@ -132,6 +201,17 @@ function App() {
                 value={selectedMetric}
                 label="Select Metric"
                 onChange={handleDropdownChange}
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(0, 245, 255, 0.5)',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#00F5FF',
+                  },
+                }}
               >
                 {metricOptions.map((option) => (
                   <MenuItem key={option.value} value={option.value} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -147,7 +227,8 @@ function App() {
                           display: 'flex', 
                           p: 0.5,
                           borderRadius: '50%',
-                          backgroundColor: `${option.color}20`
+                          backgroundColor: `${option.color}20`,
+                          boxShadow: `0 0 10px ${option.color}40`,
                         }}>
                           {option.icon}
                         </Box>
@@ -171,7 +252,7 @@ function App() {
                   title="Total Sales"
                   value={`$${summaryStats.totalSales.toLocaleString()}`}
                   icon={<AttachMoneyIcon sx={{ fontSize: 28 }} />}
-                  color="#2196f3"
+                  color="#00F5FF"
                   onClick={() => handleMetricSelect('sales')}
                   selected={selectedMetric === 'sales'}
                 />
@@ -181,7 +262,7 @@ function App() {
                   title="Total Orders"
                   value={summaryStats.totalOrders.toLocaleString()}
                   icon={<ShoppingCartIcon sx={{ fontSize: 28 }} />}
-                  color="#4caf50"
+                  color="#7B42F6"
                   onClick={() => handleMetricSelect('orders')}
                   selected={selectedMetric === 'orders'}
                 />
@@ -191,7 +272,7 @@ function App() {
                   title="Total Customers"
                   value={summaryStats.totalCustomers.toLocaleString()}
                   icon={<PeopleIcon sx={{ fontSize: 28 }} />}
-                  color="#ff9800"
+                  color="#FF7C48"
                   onClick={() => handleMetricSelect('customers')}
                   selected={selectedMetric === 'customers'}
                 />
@@ -201,7 +282,7 @@ function App() {
                   title="Average Order Value"
                   value={`$${summaryStats.averageOrderValue.toLocaleString()}`}
                   icon={<TrendingUpIcon sx={{ fontSize: 28 }} />}
-                  color="#9c27b0"
+                  color="#25D07D"
                   onClick={() => handleMetricSelect('average')}
                   selected={selectedMetric === 'average'}
                 />
@@ -211,7 +292,7 @@ function App() {
 
           {/* Charts */}
           <Grid container spacing={2} sx={{ mb: { xs: 2, sm: 3 } }}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <SalesChart 
                 data={getFilteredData()} 
                 metric={selectedMetric}
@@ -219,7 +300,7 @@ function App() {
                 timeRange={timeRange}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <CategoryChart data={categoryData} />
             </Grid>
           </Grid>

@@ -9,7 +9,8 @@ import {
   Legend,
 } from 'recharts';
 
-const COLORS = ['#2196f3', '#4caf50', '#ff9800', '#9c27b0', '#f44336'];
+// Updated colors for the futuristic theme
+const COLORS = ['#00F5FF', '#7B42F6', '#FF7C48', '#25D07D', '#FF5E7D'];
 
 const CategoryChart = ({ data }) => {
   const theme = useTheme();
@@ -17,18 +18,20 @@ const CategoryChart = ({ data }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const { name, value } = payload[0].payload;
+      const color = payload[0].color;
       return (
         <Box
           sx={{
-            backgroundColor: 'background.paper',
+            backgroundColor: 'rgba(23, 28, 44, 0.95)',
             p: 2,
-            border: '1px solid #ccc',
+            border: `1px solid ${color}30`,
             borderRadius: 1,
-            boxShadow: theme.shadows[2],
+            boxShadow: `0 4px 20px rgba(0, 0, 0, 0.3), 0 0 10px ${color}40`,
+            backdropFilter: 'blur(10px)',
           }}
         >
-          <Typography variant="subtitle2">{name}</Typography>
-          <Typography variant="body1" sx={{ color: payload[0].color, fontWeight: 600 }}>
+          <Typography variant="subtitle2" sx={{ color: "#E4F0FB" }}>{name}</Typography>
+          <Typography variant="body1" sx={{ color: color, fontWeight: 600 }}>
             {`${value}% of total sales`}
           </Typography>
         </Box>
@@ -46,19 +49,33 @@ const CategoryChart = ({ data }) => {
         display: 'flex', 
         flexWrap: 'wrap', 
         justifyContent: 'center', 
-        gap: '8px',
-        marginTop: '16px'
+        gap: '12px',
+        marginTop: '20px'
       }}>
         {payload.map((entry, index) => (
-          <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+          <li key={`item-${index}`} style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            marginRight: '10px',
+            backgroundColor: `${entry.color}15`,
+            padding: '4px 10px',
+            borderRadius: '12px',
+            border: `1px solid ${entry.color}30`,
+          }}>
             <div style={{ 
-              width: '12px', 
-              height: '12px', 
+              width: '10px', 
+              height: '10px', 
               backgroundColor: entry.color, 
               borderRadius: '50%', 
-              marginRight: '5px' 
+              marginRight: '6px',
+              boxShadow: `0 0 5px ${entry.color}80` 
             }} />
-            <span style={{ fontSize: '12px', color: '#666' }}>{entry.value}</span>
+            <span style={{ 
+              fontSize: '13px', 
+              color: entry.color,
+              textShadow: `0 0 5px ${entry.color}40`,
+              fontWeight: 500
+            }}>{entry.value}</span>
           </li>
         ))}
       </ul>
@@ -67,27 +84,36 @@ const CategoryChart = ({ data }) => {
 
   return (
     <Card>
-      <CardContent sx={{ pb: 1 }}>
-        <Typography variant="h6" gutterBottom>
+      <CardContent sx={{ px: { xs: 2, sm: 3 }, pt: 2, pb: 2 }}>
+        <Typography variant="h6" gutterBottom sx={{ 
+          color: '#00F5FF',
+          textShadow: '0 0 8px rgba(0, 245, 255, 0.4)',
+          letterSpacing: '0.02em',
+        }}>
           Sales by Category
         </Typography>
-        <div style={{ width: '100%', height: 280, paddingLeft: '10px', paddingRight: '10px' }}>
+        <div style={{ width: '100%', height: 600, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+            <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
               <Pie
                 data={data}
                 cx="50%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={80}
+                cy="45%"
+                innerRadius={80}
+                outerRadius={150}
                 fill="#8884d8"
-                paddingAngle={2}
+                paddingAngle={3}
                 dataKey="value"
+                stroke="rgba(0, 0, 0, 0.2)"
+                strokeWidth={1}
               >
                 {data.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={COLORS[index % COLORS.length]}
+                    style={{
+                      filter: `drop-shadow(0 0 3px ${COLORS[index % COLORS.length]}80)`,
+                    }}
                   />
                 ))}
               </Pie>
