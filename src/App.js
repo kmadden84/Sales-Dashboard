@@ -135,7 +135,7 @@ const topLocations = [
 
 function App() {
   const [timeRange, setTimeRange] = useState('month');
-  const [selectedMetric, setSelectedMetric] = useState('sales');
+  const [selectedMetric, setSelectedMetric] = useState('average');
   const isMobile = useMediaQuery('(max-width:600px)');
 
   const handleMetricSelect = (metric) => {
@@ -151,6 +151,7 @@ function App() {
     return salesData.slice(-daysToShow);
   };
 
+  // Updated colors for the metric options
   const metricOptions = [
     { value: 'sales', label: 'Total Sales', icon: <AttachMoneyIcon sx={{ fontSize: 20, color: '#00F5FF' }} />, color: '#00F5FF', displayValue: `$${summaryStats.totalSales.toLocaleString()}` },
     { value: 'orders', label: 'Total Orders', icon: <ShoppingCartIcon sx={{ fontSize: 20, color: '#7B42F6' }} />, color: '#7B42F6', displayValue: summaryStats.totalOrders.toLocaleString() },
@@ -164,8 +165,8 @@ function App() {
       <Box 
         sx={{ 
           minHeight: '100vh',
-          px: { xs: 2, sm: 3, md: 4 },
-          py: { xs: 2, sm: 3 },
+          px: { xs: 2.5, sm: 3.5, md: 4.5 },
+          py: { xs: 2.5, sm: 3.5 },
           position: 'relative',
           '&::before': {
             content: '""',
@@ -291,25 +292,33 @@ function App() {
           )}
 
           {/* Charts */}
-          <Grid container spacing={2} sx={{ mb: { xs: 2, sm: 3 } }}>
-            <Grid item xs={12}>
+          <Box 
+            sx={{ 
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              width: '100%',
+              mb: 3,
+              gap: 3
+            }}
+          >
+            <Box sx={{ width: { xs: '100%', md: '50%' }, minHeight: '480px' }}>
               <SalesChart 
                 data={getFilteredData()} 
                 metric={selectedMetric}
                 onTimeRangeChange={setTimeRange}
                 timeRange={timeRange}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Box>
+            <Box sx={{ width: { xs: '100%', md: '50%' }, minHeight: '480px' }}>
               <CategoryChart data={categoryData} />
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
 
           {/* Bottom Section */}
           <Box sx={{ 
             display: 'flex', 
             flexDirection: { xs: 'column', md: 'row' },
-            gap: 2,
+            gap: 3,
           }}>
             <Box sx={{ flex: 1, height: '100%' }}>
               <TopProducts products={productData} />

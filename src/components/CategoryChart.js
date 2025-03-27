@@ -27,7 +27,6 @@ const CategoryChart = ({ data }) => {
             border: `1px solid ${color}30`,
             borderRadius: 1,
             boxShadow: `0 4px 20px rgba(0, 0, 0, 0.3), 0 0 10px ${color}40`,
-            backdropFilter: 'blur(10px)',
           }}
         >
           <Typography variant="subtitle2" sx={{ color: "#E4F0FB" }}>{name}</Typography>
@@ -49,33 +48,20 @@ const CategoryChart = ({ data }) => {
         display: 'flex', 
         flexWrap: 'wrap', 
         justifyContent: 'center', 
-        gap: '12px',
-        marginTop: '20px'
+        gap: '8px',
+        marginTop: '10px'
       }}>
         {payload.map((entry, index) => (
-          <li key={`item-${index}`} style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            marginRight: '10px',
-            backgroundColor: `${entry.color}15`,
-            padding: '4px 10px',
-            borderRadius: '12px',
-            border: `1px solid ${entry.color}30`,
-          }}>
+          <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
             <div style={{ 
               width: '10px', 
               height: '10px', 
               backgroundColor: entry.color, 
               borderRadius: '50%', 
-              marginRight: '6px',
+              marginRight: '5px',
               boxShadow: `0 0 5px ${entry.color}80` 
             }} />
-            <span style={{ 
-              fontSize: '13px', 
-              color: entry.color,
-              textShadow: `0 0 5px ${entry.color}40`,
-              fontWeight: 500
-            }}>{entry.value}</span>
+            <span style={{ fontSize: '12px', color: '#A1B4C7' }}>{entry.value}</span>
           </li>
         ))}
       </ul>
@@ -83,36 +69,40 @@ const CategoryChart = ({ data }) => {
   };
 
   return (
-    <Card>
-      <CardContent sx={{ px: { xs: 2, sm: 3 }, pt: 2, pb: 2 }}>
+    <Card sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      height: '100%', 
+      width: '100%', 
+      overflow: 'hidden' 
+    }}>
+      <CardContent sx={{ p: 3, pb: 2, flexGrow: 1 }}>
         <Typography variant="h6" gutterBottom sx={{ 
           color: '#00F5FF',
-          textShadow: '0 0 8px rgba(0, 245, 255, 0.4)',
-          letterSpacing: '0.02em',
+          fontWeight: 600,
+          mb: 2
         }}>
           Sales by Category
         </Typography>
-        <div style={{ width: '100%', height: 600, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', height: '360px' }}>
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+            <PieChart margin={{ top: 5, right: 10, bottom: 15, left: 10 }}>
               <Pie
                 data={data}
                 cx="50%"
                 cy="45%"
-                innerRadius={80}
-                outerRadius={150}
+                innerRadius={60}
+                outerRadius={110}
                 fill="#8884d8"
-                paddingAngle={3}
+                paddingAngle={2}
                 dataKey="value"
-                stroke="rgba(0, 0, 0, 0.2)"
-                strokeWidth={1}
               >
                 {data.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={COLORS[index % COLORS.length]}
                     style={{
-                      filter: `drop-shadow(0 0 3px ${COLORS[index % COLORS.length]}80)`,
+                      filter: `drop-shadow(0 0 5px ${COLORS[index % COLORS.length]}40)`,
                     }}
                   />
                 ))}
@@ -121,7 +111,7 @@ const CategoryChart = ({ data }) => {
               <Legend content={renderLegend} verticalAlign="bottom" align="center" />
             </PieChart>
           </ResponsiveContainer>
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -103,33 +103,6 @@ const StatsCard = ({ title, value, icon, color, onClick, selected }) => {
             {icon}
           </Box>
         </Box>
-        
-        {/* Add decorative futuristic elements */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: '30px',
-            height: '30px',
-            borderBottom: `1px solid ${selected ? color : 'rgba(255, 255, 255, 0.1)'}`,
-            borderLeft: `1px solid ${selected ? color : 'rgba(255, 255, 255, 0.1)'}`,
-            opacity: 0.4,
-          }}
-        />
-        
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '30px',
-            height: '30px',
-            borderTop: `1px solid ${selected ? color : 'rgba(255, 255, 255, 0.1)'}`,
-            borderRight: `1px solid ${selected ? color : 'rgba(255, 255, 255, 0.1)'}`,
-            opacity: 0.4,
-          }}
-        />
       </CardContent>
     </Card>
   );
