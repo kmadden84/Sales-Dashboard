@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiCard-root {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+.MuiCard-root:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+  transition: box-shadow 0.3s ease-in-out;
+}
